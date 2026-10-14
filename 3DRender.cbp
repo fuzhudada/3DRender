@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="3DRender" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/3DRender" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/3DRender" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add directory="C:/Users/chenyong/Desktop/3DRender" />
+		</Compiler>
+		<Linker>
+			<Add library="gdi32" />
+			<Add library="winpthread" />
+		</Linker>
+		<Unit filename="main.cpp" />
+		<Unit filename="src/math/mat4.cpp" />
+		<Unit filename="src/math/mat4.h" />
+		<Unit filename="src/math/vec3d.cpp" />
+		<Unit filename="src/math/vec3d.h" />
+		<Unit filename="src/math/vec4d.cpp" />
+		<Unit filename="src/math/vec4d.h" />
+		<Unit filename="src/model/triangle.cpp" />
+		<Unit filename="src/model/triangle.h" />
+		<Unit filename="src/render/3DRender.cpp" />
+		<Unit filename="src/render/3DRender.h" />
+		<Unit filename="src/render/camera.cpp" />
+		<Unit filename="src/render/camera.h" />
+		<Unit filename="src/render/display.cpp" />
+		<Unit filename="src/render/display.h" />
+		<Unit filename="src/render/projection.h" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

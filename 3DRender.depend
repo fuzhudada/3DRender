@@ -1,0 +1,58 @@
+# depslib dependency file v1.0
+1791736197 source:c:\users\chenyong\desktop\3drender\main.cpp
+	"src/math/vec3d.h"
+	"src/math/vec4d.h"
+	"src/math/mat4.h"
+	"src/render/display.h"
+	<vector>
+	<cstdint>
+
+1791474414 source:c:\users\chenyong\desktop\3drender\src\math\vec3d.cpp
+	"vec3d.h"
+	<cstdio>
+
+1791474400 c:\users\chenyong\desktop\3drender\src\math\vec3d.h
+	<cmath>
+
+1791474577 source:c:\users\chenyong\desktop\3drender\src\math\vec4d.cpp
+	"vec4d.h"
+	<cmath>
+	<cstdio>
+
+1791474577 c:\users\chenyong\desktop\3drender\src\math\vec4d.h
+	"vec3d.h"
+
+1791647981 c:\users\chenyong\desktop\3drender\src\math\mat4.h
+	"vec3d.h"
+	"vec4d.h"
+	<cmath>
+
+1791648059 source:c:\users\chenyong\desktop\3drender\src\math\mat4.cpp
+	"mat4.h"
+	<cstdio>
+
+1791897794 source:c:\users\chenyong\desktop\3drender\src\render\display.cpp
+	<windows.h>
+	"display.h"
+
+1791898495 c:\users\chenyong\desktop\3drender\src\render\display.h
+	<cstdint>
+	<vector>
+	<map>
+	"src/model/triangle.h"
+
+1791898619 c:\users\chenyong\desktop\3drender\src\model\triangle.h
+	"src/math/vec3d.h"
+	<cstdint>
+
+1791898621 source:c:\users\chenyong\desktop\3drender\src\model\triangle.cpp
+	"triangle.h"
+
+1791822786 source:c:\users\chenyong\desktop\3drender\src\render\camera.cpp
+	"camera.h"
+
+1791893749 c:\users\chenyong\desktop\3drender\src\render\camera.h
+	"src/math/mat4.h"
+
+1791898205 source:c:\users\chenyong\desktop\3drender\src\render\3drender.cpp
+
