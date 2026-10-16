@@ -1,9 +1,6 @@
 # depslib dependency file v1.0
-1791736197 source:c:\users\chenyong\desktop\3drender\main.cpp
-	"src/math/vec3d.h"
-	"src/math/vec4d.h"
-	"src/math/mat4.h"
-	"src/render/display.h"
+1792083387 source:c:\users\chenyong\desktop\3drender\main.cpp
+	"src/render/3DRender.h"
 	<vector>
 	<cstdint>
 
@@ -54,5 +51,19 @@
 1791893749 c:\users\chenyong\desktop\3drender\src\render\camera.h
 	"src/math/mat4.h"
 
-1791898205 source:c:\users\chenyong\desktop\3drender\src\render\3drender.cpp
+1792082630 source:c:\users\chenyong\desktop\3drender\src\render\3drender.cpp
+	"3DRender.h"
+	<vector>
+	<math.h>
+
+1792082399 c:\users\chenyong\desktop\3drender\src\render\3drender.h
+	<unordered_map>
+	<utility>
+	"src/model/triangle.h"
+	"camera.h"
+	"projection.h"
+	"src/render/display.h"
+
+1791898369 c:\users\chenyong\desktop\3drender\src\render\projection.h
+	"src/math/mat4.h"
 
