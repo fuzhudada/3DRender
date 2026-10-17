@@ -1,8 +1,10 @@
 # depslib dependency file v1.0
-1792083387 source:c:\users\chenyong\desktop\3drender\main.cpp
+1792255713 source:c:\users\chenyong\desktop\3drender\main.cpp
 	"src/render/3DRender.h"
-	<vector>
+	<cmath>
 	<cstdint>
+	<algorithm>
+	<utility>
 
 1791474414 source:c:\users\chenyong\desktop\3drender\src\math\vec3d.cpp
 	"vec3d.h"
@@ -11,7 +13,7 @@
 1791474400 c:\users\chenyong\desktop\3drender\src\math\vec3d.h
 	<cmath>
 
-1791474577 source:c:\users\chenyong\desktop\3drender\src\math\vec4d.cpp
+1792161298 source:c:\users\chenyong\desktop\3drender\src\math\vec4d.cpp
 	"vec4d.h"
 	<cmath>
 	<cstdio>
@@ -24,39 +26,43 @@
 	"vec4d.h"
 	<cmath>
 
-1791648059 source:c:\users\chenyong\desktop\3drender\src\math\mat4.cpp
+1792254829 source:c:\users\chenyong\desktop\3drender\src\math\mat4.cpp
 	"mat4.h"
 	<cstdio>
 
-1791897794 source:c:\users\chenyong\desktop\3drender\src\render\display.cpp
+1792209709 source:c:\users\chenyong\desktop\3drender\src\render\display.cpp
 	<windows.h>
 	"display.h"
 
-1791898495 c:\users\chenyong\desktop\3drender\src\render\display.h
+1792209709 c:\users\chenyong\desktop\3drender\src\render\display.h
 	<cstdint>
 	<vector>
 	<map>
 	"src/model/triangle.h"
 
-1791898619 c:\users\chenyong\desktop\3drender\src\model\triangle.h
+1792241319 c:\users\chenyong\desktop\3drender\src\model\triangle.h
 	"src/math/vec3d.h"
 	<cstdint>
 
-1791898621 source:c:\users\chenyong\desktop\3drender\src\model\triangle.cpp
+1792241315 source:c:\users\chenyong\desktop\3drender\src\model\triangle.cpp
 	"triangle.h"
 
-1791822786 source:c:\users\chenyong\desktop\3drender\src\render\camera.cpp
+1792165949 source:c:\users\chenyong\desktop\3drender\src\render\camera.cpp
 	"camera.h"
 
-1791893749 c:\users\chenyong\desktop\3drender\src\render\camera.h
+1792165957 c:\users\chenyong\desktop\3drender\src\render\camera.h
 	"src/math/mat4.h"
 
-1792082630 source:c:\users\chenyong\desktop\3drender\src\render\3drender.cpp
+1792254582 source:c:\users\chenyong\desktop\3drender\src\render\3drender.cpp
 	"3DRender.h"
+	"text.h"
 	<vector>
 	<math.h>
+	<chrono>
+	<windows.h>
+	<iostream>
 
-1792082399 c:\users\chenyong\desktop\3drender\src\render\3drender.h
+1792253679 c:\users\chenyong\desktop\3drender\src\render\3drender.h
 	<unordered_map>
 	<utility>
 	"src/model/triangle.h"
@@ -66,4 +72,12 @@
 
 1791898369 c:\users\chenyong\desktop\3drender\src\render\projection.h
 	"src/math/mat4.h"
+
+1792227920 source:c:\users\chenyong\desktop\3drender\src\render\text.cpp
+	"text.h"
+
+1792227388 c:\users\chenyong\desktop\3drender\src\render\text.h
+	<cstdint>
+	<vector>
+	<string>
 

@@ -9,30 +9,42 @@
 
 class Renderer {
 private:
-    std::unordered_map<int, Triangle> triangles;
+    std::vector<Triangle> triangles;
+    std::vector<uint32_t> fb;
+    std::vector<float> z_buffer;
     Camera camera;
     Projection proj;
     int w, h;
+    float speed, sensitivity;
+    float yaw, pitch;
 
     Vec4d ndcToScreen(const Vec4d& v) const;
-    Vec3d pointTransform(const Vec3d& v) const;
-    void triangleTransform(Triangle& t) const;
+    void triangleTransform(const Triangle& t, std::vector<Triangle>& out) const;
 
-    bool isIn(int x, int y, const Triangle& t, float &w1, float &w2, float &w3) const;
+    void getFb();
+
+    void mainLoop();
+    void updateLook(float dt);
+    void updateMove(float dt);
 
 public:
     Renderer();
-    Renderer(const Camera& c, const Projection& p);
+    Renderer(const Camera& c, const Projection& p, float speed, float sensitivity);
 
     void addTriangle(const Triangle& t);
-    void delTriangle(int id);
     void clearTriangles();
 
-    Camera & getCamera() { return camera; }
-    Projection & getProjection() { return proj; }
+    Camera getCamera() const { return camera; }
+    Projection getProjection() const { return proj; }
 
-    void setCamera(const Camera& c) { this->camera = c; }
+    void setCamera(const Camera& c);
     void setProjection(const Projection& p) { this->proj = p; }
+
+    float getSpeed() const { return speed; }
+    float getSensitivity() const { return sensitivity; }
+
+    void setSpeed(float speed) { this->speed = speed; }
+    void setSensitivity(float sensitivity) { this->sensitivity = sensitivity; }
 
     void paint();
 };

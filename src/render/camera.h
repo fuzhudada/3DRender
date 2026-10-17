@@ -11,6 +11,7 @@ public:
 
     Vec3d getEye() const;
     Vec3d getFace() const;
+    Vec3d getSide() const;
     Vec3d getUp() const;
 
     void setEye(const Vec3d& eye);

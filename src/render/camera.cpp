@@ -17,6 +17,10 @@ Vec3d Camera::getFace() const {
     return Vec3d{-mat.m[2][0], -mat.m[2][1], -mat.m[2][2]};
 }
 
+Vec3d Camera::getSide() const {
+    return Vec3d{mat.m[0][0], mat.m[0][1], mat.m[0][2]};
+}
+
 Vec3d Camera::getUp() const {
     return Vec3d{mat.m[1][0], mat.m[1][1], mat.m[1][2]};
 }

@@ -53,6 +53,8 @@
 		<Unit filename="src/render/display.cpp" />
 		<Unit filename="src/render/display.h" />
 		<Unit filename="src/render/projection.h" />
+		<Unit filename="src/render/text.cpp" />
+		<Unit filename="src/render/text.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
