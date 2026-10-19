@@ -1,3 +1,4 @@
+#pragma once
 #include "src/math/mat4.h"
 
 class Camera {

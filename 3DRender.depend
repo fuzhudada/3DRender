@@ -1,12 +1,12 @@
 # depslib dependency file v1.0
-1792255713 source:c:\users\chenyong\desktop\3drender\main.cpp
-	"src/render/3DRender.h"
+1792423343 source:c:\users\chenyong\desktop\3drender\main.cpp
+	"src/app/application.h"
 	<cmath>
 	<cstdint>
 	<algorithm>
 	<utility>
 
-1791474414 source:c:\users\chenyong\desktop\3drender\src\math\vec3d.cpp
+1792311114 source:c:\users\chenyong\desktop\3drender\src\math\vec3d.cpp
 	"vec3d.h"
 	<cstdio>
 
@@ -26,7 +26,7 @@
 	"vec4d.h"
 	<cmath>
 
-1792254829 source:c:\users\chenyong\desktop\3drender\src\math\mat4.cpp
+1792282207 source:c:\users\chenyong\desktop\3drender\src\math\mat4.cpp
 	"mat4.h"
 	<cstdio>
 
@@ -50,25 +50,18 @@
 1792165949 source:c:\users\chenyong\desktop\3drender\src\render\camera.cpp
 	"camera.h"
 
-1792165957 c:\users\chenyong\desktop\3drender\src\render\camera.h
+1792409484 c:\users\chenyong\desktop\3drender\src\render\camera.h
 	"src/math/mat4.h"
 
-1792254582 source:c:\users\chenyong\desktop\3drender\src\render\3drender.cpp
-	"3DRender.h"
-	"text.h"
-	<vector>
-	<math.h>
-	<chrono>
-	<windows.h>
-	<iostream>
+1792405213 source:c:\users\chenyong\desktop\3drender\src\render\3drender.cpp
 
-1792253679 c:\users\chenyong\desktop\3drender\src\render\3drender.h
+1792312435 c:\users\chenyong\desktop\3drender\src\render\3drender.h
 	<unordered_map>
 	<utility>
 	"src/model/triangle.h"
 	"camera.h"
 	"projection.h"
-	"src/render/display.h"
+	"src/app/display.h"
 
 1791898369 c:\users\chenyong\desktop\3drender\src\render\projection.h
 	"src/math/mat4.h"
@@ -80,4 +73,69 @@
 	<cstdint>
 	<vector>
 	<string>
+
+1792408587 c:\users\chenyong\desktop\3drender\src\app\display.h
+	<cstdint>
+	<vector>
+	"src/model/triangle.h"
+
+1792209709 source:c:\users\chenyong\desktop\3drender\src\app\display.cpp
+	<windows.h>
+	"display.h"
+
+1792313041 source:c:\users\chenyong\desktop\3drender\src\app\overlay.cpp
+	"text.h"
+	"overlay.h"
+
+1792227920 source:c:\users\chenyong\desktop\3drender\src\app\text.cpp
+	"text.h"
+
+1792409510 c:\users\chenyong\desktop\3drender\src\app\text.h
+	<cstdint>
+	<vector>
+	<string>
+
+1792313075 c:\users\chenyong\desktop\3drender\src\app\overlay.h
+	<string>
+	<vector>
+
+1792422354 c:\users\chenyong\desktop\3drender\src\app\application.h
+	"src/render/renderer.h"
+	"src/render/light.h"
+	"cameraController.h"
+
+1792422968 source:c:\users\chenyong\desktop\3drender\src\app\application.cpp
+	"application.h"
+	"src/app/overlay.h"
+	<chrono>
+	<iostream>
+
+1792421714 source:c:\users\chenyong\desktop\3drender\src\render\renderer.cpp
+	"renderer.h"
+	<iostream>
+
+1792420833 c:\users\chenyong\desktop\3drender\src\render\renderer.h
+	"src/model/triangle.h"
+	"src/render/camera.h"
+	"src/render/projection.h"
+	"src/render/light.h"
+	<vector>
+
+1792409578 c:\users\chenyong\desktop\3drender\src\app\cameracontroller.h
+	"src/math/vec3d.h"
+	"display.h"
+	"src/render/camera.h"
+	<windows.h>
+
+1792409578 source:c:\users\chenyong\desktop\3drender\src\app\cameracontroller.cpp
+	"cameraController.h"
+	<utility>
+
+1792422586 c:\users\chenyong\desktop\3drender\src\render\light.h
+	"src/math/vec3d.h"
+	"src/model/triangle.h"
+
+1792421749 source:c:\users\chenyong\desktop\3drender\src\render\light.cpp
+	"light.h"
+	<algorithm>
 

@@ -1,7 +1,6 @@
 #pragma once
 #include <cstdint>
 #include <vector>
-#include <map>
 #include "src/model/triangle.h"
 
 // 弹出一个窗口显示 framebuffer 内容，阻塞直到用户关闭窗口。

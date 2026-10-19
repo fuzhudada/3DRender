@@ -1,4 +1,4 @@
-#include "src/render/3DRender.h"
+#include "src/app/application.h"
 
 #include <cmath>
 #include <cstdint>
@@ -9,36 +9,22 @@ static uint32_t rgba(int r, int g, int b, int a = 255) {
     return (uint32_t(a) << 24) | (uint32_t(r) << 16) | (uint32_t(g) << 8) | uint32_t(b);
 }
 
-static uint32_t shadeColor(uint32_t c, float k) {
-    int a = int((c >> 24) & 0xFF);
-    int r = int((c >> 16) & 0xFF);
-    int g = int((c >>  8) & 0xFF);
-    int b = int( c        & 0xFF);
-    r = std::min(255, int(r * k + 0.5f));
-    g = std::min(255, int(g * k + 0.5f));
-    b = std::min(255, int(b * k + 0.5f));
-    return (uint32_t(a) << 24) | (uint32_t(r) << 16) | (uint32_t(g) << 8) | uint32_t(b);
-}
-
 int main() {
-    Renderer renderer;
+    Application app;
 
     const float PI = 3.14159265358979f;
 
-    const float S  = 0.80f;
-    const float AZ = -4.50f;
+    // ---------- 整体缩放 & 深度锚点（超级大） ----------
+    const float S  = 1.60f;    // 原 0.80，放大 2 倍
+    const float AZ = -4.80f;   // 略微后退，让大头居中
 
     auto tx = [&](float x) { return S * x; };
     auto ty = [&](float y) { return S * y; };
     auto tz = [&](float z) { return AZ + S * (z - AZ); };
 
-    float Lx = 0.45f, Ly = 0.80f, Lz = 0.55f;
-    {
-        float l = std::sqrt(Lx*Lx + Ly*Ly + Lz*Lz);
-        Lx /= l; Ly /= l; Lz /= l;
-    }
-
-    // ---------- 椭球生成器 ----------
+    // ================================================================
+    // 椭球生成器
+    // ================================================================
     auto addEllipsoid = [&](float cx, float cy, float cz,
                             float rx, float ry, float rz,
                             int slices, int stacks,
@@ -70,20 +56,13 @@ int main() {
 
             if (nx * mx + ny * my + nz * mz < 0.0f) {
                 std::swap(b, c);
-                nx = -nx; ny = -ny; nz = -nz;
             }
-            float len = std::sqrt(nx*nx + ny*ny + nz*nz);
-            if (len < 1e-8f) return;
-            nx /= len; ny /= len; nz /= len;
 
-            float d = nx * Lx + ny * Ly + nz * Lz;
-            if (d < 0.0f) d = 0.0f;
-            float k = 0.55f + 0.65f * d;
-            renderer.addTriangle(Triangle(
+            app.addTriangle(Triangle(
                 { a.x, a.y, a.z },
                 { b.x, b.y, b.z },
                 { c.x, c.y, c.z },
-                shadeColor(col, k)
+                col
             ));
         };
 
@@ -99,14 +78,13 @@ int main() {
         }
     };
 
-    // ---------- 头部几何参数（统一用常量，方便日后微调） ----------
-    const float HEAD_CY = 0.40f;    // 头中心 y（原 0.55，下移 0.15）
+    // 头部表面 z（脸部贴花用）
+    const float HEAD_CY = 0.40f;
     const float HEAD_CZ = -4.60f;
     const float HEAD_RX = 1.05f;
     const float HEAD_RY = 0.90f;
     const float HEAD_RZ = 1.00f;
 
-    // 头部表面 z（脸部贴花用）
     auto headSurfZ = [&](float x, float y) {
         float dx = x / HEAD_RX;
         float dy = (y - HEAD_CY) / HEAD_RY;
@@ -126,7 +104,7 @@ int main() {
             float x1 = cx + rx * std::cos(a1), y1 = cy + ry * std::sin(a1);
             float z0 = headSurfZ(x0, y0) + eps;
             float z1 = headSurfZ(x1, y1) + eps;
-            renderer.addTriangle(Triangle(
+            app.addTriangle(Triangle(
                 { tx(cx), ty(cy), tz(zc) },
                 { tx(x0), ty(y0), tz(z0) },
                 { tx(x1), ty(y1), tz(z1) },
@@ -154,15 +132,13 @@ int main() {
                  48, 32, SKIN);
 
     // ================================================================
-    // 肚皮贴花：贴合身体前表面，占身体高度的下方 2/3 略少一点
-    //   phi_c = -0.45, phi_r = 0.65 → 上边 y≈-0.97, 下边 y≈-2.41
-    //   theta_r = 1.00 → 前方约 115° 覆盖
+    // 肚皮贴花（下方 2/3 略少一圈）
     // ================================================================
     {
         float bCx = tx(BODY_CX), bCy = ty(BODY_CY), bCz = tz(BODY_CZ);
         float bRx = BODY_RX * S, bRy = BODY_RY * S, bRz = BODY_RZ * S;
 
-        auto bodySurfPt = [&](float phi, float theta, float eps) {
+        auto bodySurfPt = [&](float phi, float theta, float eps) -> Vec3d {
             float cp = std::cos(phi), sp = std::sin(phi);
             float ct = std::cos(theta), st = std::sin(theta);
             float lx = bRx * cp * ct;
@@ -174,8 +150,8 @@ int main() {
             float nl = std::sqrt(nx*nx + ny*ny + nz*nz);
             if (nl < 1e-8f) nl = 1.0f;
             return Vec3d{ bCx + lx + eps*nx/nl,
-                                   bCy + ly + eps*ny/nl,
-                                   bCz + lz + eps*nz/nl };
+                          bCy + ly + eps*ny/nl,
+                          bCz + lz + eps*nz/nl };
         };
 
         const float phi_c   = -0.45f;
@@ -203,18 +179,16 @@ int main() {
                                       theta_c + theta_r * r1 * std::sin(a1), EPS);
 
                 if (j > 0) {
-                    renderer.addTriangle(Triangle(v00, v10, v11, BELLY));
-                    renderer.addTriangle(Triangle(v00, v11, v01, BELLY));
+                    app.addTriangle(Triangle(v00, v10, v11, BELLY));
+                    app.addTriangle(Triangle(v00, v11, v01, BELLY));
                 } else {
-                    renderer.addTriangle(Triangle(v00, v10, v11, BELLY));
+                    app.addTriangle(Triangle(v00, v10, v11, BELLY));
                 }
             }
         }
     }
 
-    // ================================================================
-    // 头（中心下移到 0.40，靠重叠自然填补脖子凹陷，不再需要肩部椭球）
-    // ================================================================
+    // 头（下移到 0.40，与身体自然重叠无凹陷）
     addEllipsoid( 0.00f, HEAD_CY, HEAD_CZ, HEAD_RX, HEAD_RY, HEAD_RZ,
                   48, 32, SKIN);
 
@@ -223,7 +197,7 @@ int main() {
     // ================================================================
     const float EYE_LX = -0.45f;
     const float EYE_RX =  0.45f;
-    const float EYE_Y  =  0.70f;   // 原 0.85，随头下移 0.15
+    const float EYE_Y  =  0.70f;
 
     addFaceDecal(EYE_LX, EYE_Y, 0.22f, 0.22f, 40, 0.030f, WHITE);
     addFaceDecal(EYE_RX, EYE_Y, 0.22f, 0.22f, 40, 0.030f, WHITE);
@@ -299,9 +273,7 @@ int main() {
     addEllipsoid( 0.00f, -1.40f, -5.85f,  0.28f, 0.22f, 0.55f, 28, 18, SKIN);
     addEllipsoid( 0.00f, -1.15f, -6.15f,  0.18f, 0.15f, 0.30f, 24, 16, SKIN);
 
-    // ================================================================
-    // 背刺（第一个略微下移贴近新头后表面）
-    // ================================================================
+    // 背刺
     addEllipsoid( 0.00f,  0.55f, -5.65f,  0.10f, 0.18f, 0.12f, 16, 12, SPIKE);
     addEllipsoid( 0.00f,  0.00f, -5.60f,  0.12f, 0.22f, 0.14f, 16, 12, SPIKE);
     addEllipsoid( 0.00f, -0.50f, -5.70f,  0.13f, 0.24f, 0.15f, 16, 12, SPIKE);
@@ -310,7 +282,7 @@ int main() {
     addEllipsoid( 0.00f, -2.10f, -5.74f,  0.10f, 0.18f, 0.12f, 16, 12, SPIKE);
 
     // ================================================================
-    // 嘴巴（整体下移 0.15）
+    // 嘴巴
     // ================================================================
     {
         const int   SEG = 32;
@@ -320,7 +292,7 @@ int main() {
 
         auto mouthTopY = [&](float x) {
             float t = x / 0.35f;
-            return 0.13f - 0.15f * (1.0f - t * t);   // 原 0.28，下移 0.15
+            return 0.13f - 0.15f * (1.0f - t * t);
         };
 
         for (int i = 0; i < SEG; ++i) {
@@ -334,13 +306,13 @@ int main() {
             float za2 = headSurfZ(xa, ya - TH) + 0.02f;
             float zb2 = headSurfZ(xb, yb - TH) + 0.02f;
 
-            renderer.addTriangle(Triangle(
+            app.addTriangle(Triangle(
                 { tx(xa), ty(ya),      tz(za1) },
                 { tx(xb), ty(yb - TH), tz(zb2) },
                 { tx(xb), ty(yb),      tz(zb1) },
                 MOUTH));
 
-            renderer.addTriangle(Triangle(
+            app.addTriangle(Triangle(
                 { tx(xa), ty(ya),      tz(za1) },
                 { tx(xa), ty(ya - TH), tz(za2) },
                 { tx(xb), ty(yb - TH), tz(zb2) },
@@ -348,6 +320,6 @@ int main() {
         }
     }
 
-    renderer.paint();
+    app.paint();
     return 0;
 }
