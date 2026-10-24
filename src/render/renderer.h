@@ -7,6 +7,13 @@
 
 #include <vector>
 
+struct TriangleInfo {
+    Vec3d a, b, c;
+    Vec3d wa, wb, wc;
+    Vec3d na, nb, nc;
+    uint32_t color;
+};
+
 class Renderer {
 private:
     std::vector<Triangle>& triangles;
@@ -17,7 +24,7 @@ private:
     int w, h;
 
     Vec4d ndcToScreen(const Vec4d& v) const;
-    void triangleTransform(const Triangle& t, std::vector<Triangle>& out) const;
+    void triangleTransform(const Triangle& t, std::vector<TriangleInfo>& out) const;
 
 public:
     Renderer(std::vector<Triangle>& triangles, Camera& camera, Projection& proj, Light& light);

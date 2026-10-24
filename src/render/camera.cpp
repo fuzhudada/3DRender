@@ -1,16 +1,11 @@
 #include "camera.h"
 
-Camera::Camera() : mat(Mat4d::lookAt({0, 0, 0}, {0, 0, -1}, {0, 1, 0})), worldUp({0, 1, 0}) {}
+Camera::Camera() : mat(Mat4d::lookAt({0, 0, 0}, {0, 0, -1}, {0, 1, 0})), worldUp({0, 1, 0}), eye({0, 0, 0}) {}
 
-Camera::Camera(const Vec3d& eye, const Vec3d& center, const Vec3d& up) : mat(Mat4d::lookAt(eye, center, up)), worldUp(up.normalized()) {}
+Camera::Camera(const Vec3d& eye, const Vec3d& center, const Vec3d& up) : mat(Mat4d::lookAt(eye, center, up)), worldUp(up.normalized()), eye(eye) {}
 
 Vec3d Camera::getEye() const {
-    Mat4d tmat = mat.transposed();
-
-    Vec4d vecm = {mat.m[0][3], mat.m[1][3], mat.m[2][3], 1};
-
-    Vec4d negeye = tmat * vecm;
-    return -negeye.xyz();
+    return eye;
 }
 
 Vec3d Camera::getFace() const {
@@ -29,6 +24,7 @@ void Camera::setEye(const Vec3d& eye) {
     Vec3d face = getFace();
     Vec3d center = eye + face;
     mat = Mat4d::lookAt(eye, center, worldUp);
+    this->eye = eye;
 }
 
 void Camera::setFace(const Vec3d& face) {
@@ -44,5 +40,6 @@ void Camera::setFace(const Vec3d& face) {
 void Camera::setEyeAndFace(const Vec3d& eye, const Vec3d& center) {
     if((center - eye).normalized().cross(worldUp).length() > 1e-9) {
         mat = Mat4d::lookAt(eye, center, worldUp);
+        this->eye = eye;
     }
 }

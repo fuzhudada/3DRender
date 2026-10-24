@@ -2,52 +2,60 @@
 
 #include <iostream>
 
-struct tempTriangle {
+struct tempTriangleInfo {
     Vec4d a, b, c;
+    Vec3d wa, wb, wc;
+    Vec3d na, nb, nc;
 };
 
-static std::vector<tempTriangle> clip(const tempTriangle& t, float n) {
-    std::vector<Vec4d> in, out, mid;
-    std::vector<tempTriangle> res;
+struct tempPoint {
+    Vec4d a;
+    Vec3d wa, na;
+};
+
+static void clip(const tempTriangleInfo& t, std::vector<tempTriangleInfo>& res, float n) {
+    std::vector<tempPoint> in, out, mid;
     if(t.a.z >= -n){
-        in.push_back(t.a);
+        in.push_back({t.a, t.wa, t.na});
     }else{
-        out.push_back(t.a);
+        out.push_back({t.a, t.wa, t.na});
     }
 
     if(t.b.z >= -n){
-        in.push_back(t.b);
+        in.push_back({t.b, t.wb, t.nb});
     }else{
-        out.push_back(t.b);
+        out.push_back({t.b, t.wb, t.nb});
     }
 
     if(t.c.z >= -n){
-        in.push_back(t.c);
+        in.push_back({t.c, t.wc, t.nc});
     }else{
-        out.push_back(t.c);
+        out.push_back({t.c, t.wc, t.nc});
     }
 
     for(int i=0;i<in.size();i++){
         for(int j=0;j<out.size();j++){
-            float t = (n + out[j].z) / (out[j].z - in[i].z);
-            float xp = in[i].x * t + out[j].x * (1 - t);
-            float yp = in[i].y * t + out[j].y * (1 - t);
-            mid.push_back({xp, yp, -n, n});
+            float t = (n + out[j].a.z) / (out[j].a.z - in[i].a.z);
+            float xp = in[i].a.x * t + out[j].a.x * (1 - t);
+            float yp = in[i].a.y * t + out[j].a.y * (1 - t);
+            Vec3d wp = in[i].wa * t + out[j].wa * (1 - t);
+            Vec3d np = in[i].na * t + out[j].na * (1 - t);
+            np = np.normalized();
+            mid.push_back({{xp, yp, -n, n}, wp, np});
         }
     }
 
     if(in.size() == 1){
-        res.push_back({in[0], mid[0], mid[1]});
+        res.push_back({in[0].a, mid[0].a, mid[1].a, in[0].wa, mid[0].wa, mid[1].wa, in[0].na, mid[0].na, mid[1].na});
     }else if(in.size() == 2){
-        res.push_back({in[0], in[1], mid[0]});
-        res.push_back({in[1], mid[0], mid[1]});
+        res.push_back({in[0].a, in[1].a, mid[0].a, in[0].wa, in[1].wa, mid[0].wa, in[0].na, in[1].na, mid[0].na});
+        res.push_back({in[1].a, mid[0].a, mid[1].a, in[1].wa, mid[0].wa, mid[1].wa, in[1].na, mid[0].na, mid[1].na});
     }else if(in.size() == 3){
-        res.push_back({in[0], in[1], in[2]});
+        res.push_back({in[0].a, in[1].a, in[2].a, in[0].wa, in[1].wa, in[2].wa, in[0].na, in[1].na, in[2].na});
     }
-    return res;
 }
 
-static bool isIn(int x, int y, float a, const Triangle& t, float &w1, float &w2, float &w3) {
+static bool isIn(int x, int y, float a, const TriangleInfo& t, float &w1, float &w2, float &w3) {
     if(std::fabs(a) < 1e-9) return false;
 
     float fx = x + 0.5f;
@@ -74,7 +82,7 @@ Vec4d Renderer::ndcToScreen(const Vec4d& v) const {
     return {(v.x + 1) * w / 2, (1 - v.y) * h / 2, v.z, v.w};
 }
 
-void Renderer::triangleTransform(const Triangle& t, std::vector<Triangle>& out) const {
+void Renderer::triangleTransform(const Triangle& t, std::vector<TriangleInfo>& out) const {
     Vec4d v4a = {t.a.x, t.a.y, t.a.z, 1};
     Vec4d v4b = {t.b.x, t.b.y, t.b.z, 1};
     Vec4d v4c = {t.c.x, t.c.y, t.c.z, 1};
@@ -83,16 +91,19 @@ void Renderer::triangleTransform(const Triangle& t, std::vector<Triangle>& out) 
     v4b = proj * (camera * v4b);
     v4c = proj * (camera * v4c);
 
-    auto clipedTriangles = clip({v4a, v4b, v4c}, proj.getNear());
+    tempTriangleInfo tti = {v4a, v4b, v4c, t.a, t.b, t.c, t.na, t.nb, t.nc};
+    std::vector<tempTriangleInfo> clipedTriangles;
+    clip(tti, clipedTriangles, proj.getNear());
 
     for(int i=0;i<clipedTriangles.size();i++){
-        v4a = (1 / clipedTriangles[i].a.w) * clipedTriangles[i].a;
-        v4b = (1 / clipedTriangles[i].b.w) * clipedTriangles[i].b;
-        v4c = (1 / clipedTriangles[i].c.w) * clipedTriangles[i].c;
+        tempTriangleInfo tti = clipedTriangles[i];
+        v4a = (1 / tti.a.w) * tti.a;
+        v4b = (1 / tti.b.w) * tti.b;
+        v4c = (1 / tti.c.w) * tti.c;
         v4a = ndcToScreen(v4a);
         v4b = ndcToScreen(v4b);
         v4c = ndcToScreen(v4c);
-        Triangle t1(v4a.xyz(), v4b.xyz(), v4c.xyz(), t.color);
+        TriangleInfo t1 = {v4a.xyz(), v4b.xyz(), v4c.xyz(), tti.wa, tti.wb, tti.wc, tti.na, tti.nb, tti.nc, t.color};
         out.push_back(t1);
     }
 }
@@ -108,13 +119,16 @@ void Renderer::paint(std::vector<uint32_t>& fb) {
     fb.assign(w * h, 0);
     z_buffer.assign(w * h, 2.0f);
 
+    Vec3d eye = camera.getEye();
     for(const auto& t1 : triangles) {
-        float l = light.FlatLambert(t1);
-        std::vector<Triangle> res;
+        //float l = light.FlatLambert(t1);
+        //float l = light.FlatPhong(t1, eye);
+        //Vec3d l1 = light.GouraudPhong(t1, eye);
+        std::vector<TriangleInfo> res;
         triangleTransform(t1, res);
 
         for(int i=0;i<res.size();i++){
-            Triangle t = res[i];
+            TriangleInfo t = res[i];
             float minx = std::min(std::min(t.a.x, t.b.x), t.c.x);
             float maxx = std::max(std::max(t.a.x, t.b.x), t.c.x);
             float miny = std::min(std::min(t.a.y, t.b.y), t.c.y);
@@ -132,6 +146,10 @@ void Renderer::paint(std::vector<uint32_t>& fb) {
                     float w1, w2, w3;
                     if(isIn(j, i, a, t, w1, w2, w3)) {
                         float depth = w1 * t.a.z + w2 * t.b.z + w3 * t.c.z;
+                        Vec3d wp = w1 * t.wa + w2 * t.wb + w3 * t.wc;
+                        Vec3d np = w1 * t.na + w2 * t.nb + w3 * t.nc;
+                        np = np.normalized();
+                        float l = light.getLightOnCenter(np, wp, camera.getEye());
 
                         if(z_buffer[i * w + j] > depth) {
                             z_buffer[i * w + j] = depth;

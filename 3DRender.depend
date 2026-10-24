@@ -1,12 +1,12 @@
 # depslib dependency file v1.0
-1792423343 source:c:\users\chenyong\desktop\3drender\main.cpp
+1792591412 source:c:\users\chenyong\desktop\3drender\main.cpp
 	"src/app/application.h"
 	<cmath>
 	<cstdint>
 	<algorithm>
 	<utility>
 
-1792311114 source:c:\users\chenyong\desktop\3drender\src\math\vec3d.cpp
+1792510227 source:c:\users\chenyong\desktop\3drender\src\math\vec3d.cpp
 	"vec3d.h"
 	<cstdio>
 
@@ -40,17 +40,17 @@
 	<map>
 	"src/model/triangle.h"
 
-1792241319 c:\users\chenyong\desktop\3drender\src\model\triangle.h
+1792511130 c:\users\chenyong\desktop\3drender\src\model\triangle.h
 	"src/math/vec3d.h"
 	<cstdint>
 
-1792241315 source:c:\users\chenyong\desktop\3drender\src\model\triangle.cpp
+1792511130 source:c:\users\chenyong\desktop\3drender\src\model\triangle.cpp
 	"triangle.h"
 
-1792165949 source:c:\users\chenyong\desktop\3drender\src\render\camera.cpp
+1792813334 source:c:\users\chenyong\desktop\3drender\src\render\camera.cpp
 	"camera.h"
 
-1792409484 c:\users\chenyong\desktop\3drender\src\render\camera.h
+1792813013 c:\users\chenyong\desktop\3drender\src\render\camera.h
 	"src/math/mat4.h"
 
 1792405213 source:c:\users\chenyong\desktop\3drender\src\render\3drender.cpp
@@ -104,17 +104,17 @@
 	"src/render/light.h"
 	"cameraController.h"
 
-1792422968 source:c:\users\chenyong\desktop\3drender\src\app\application.cpp
+1792813467 source:c:\users\chenyong\desktop\3drender\src\app\application.cpp
 	"application.h"
 	"src/app/overlay.h"
 	<chrono>
 	<iostream>
 
-1792421714 source:c:\users\chenyong\desktop\3drender\src\render\renderer.cpp
+1792813334 source:c:\users\chenyong\desktop\3drender\src\render\renderer.cpp
 	"renderer.h"
 	<iostream>
 
-1792420833 c:\users\chenyong\desktop\3drender\src\render\renderer.h
+1792812127 c:\users\chenyong\desktop\3drender\src\render\renderer.h
 	"src/model/triangle.h"
 	"src/render/camera.h"
 	"src/render/projection.h"
@@ -131,11 +131,11 @@
 	"cameraController.h"
 	<utility>
 
-1792422586 c:\users\chenyong\desktop\3drender\src\render\light.h
+1792812229 c:\users\chenyong\desktop\3drender\src\render\light.h
 	"src/math/vec3d.h"
 	"src/model/triangle.h"
 
-1792421749 source:c:\users\chenyong\desktop\3drender\src\render\light.cpp
+1792813523 source:c:\users\chenyong\desktop\3drender\src\render\light.cpp
 	"light.h"
 	<algorithm>
 

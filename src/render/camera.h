@@ -4,7 +4,7 @@
 class Camera {
 private:
     Mat4d mat;
-    Vec3d worldUp;
+    Vec3d worldUp, eye;
 
 public:
     Camera();

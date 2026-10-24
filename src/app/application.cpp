@@ -101,5 +101,6 @@ void Application::mainLoop() {
 
 void Application::paint() {
     showWindow(fb, w, h);
+    light.setShininess(32);
     mainLoop();
 }

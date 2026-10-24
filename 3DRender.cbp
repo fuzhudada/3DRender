@@ -38,6 +38,16 @@
 			<Add library="winpthread" />
 		</Linker>
 		<Unit filename="main.cpp" />
+		<Unit filename="src/app/application.cpp" />
+		<Unit filename="src/app/application.h" />
+		<Unit filename="src/app/cameraController.cpp" />
+		<Unit filename="src/app/cameraController.h" />
+		<Unit filename="src/app/display.cpp" />
+		<Unit filename="src/app/display.h" />
+		<Unit filename="src/app/overlay.cpp" />
+		<Unit filename="src/app/overlay.h" />
+		<Unit filename="src/app/text.cpp" />
+		<Unit filename="src/app/text.h" />
 		<Unit filename="src/math/mat4.cpp" />
 		<Unit filename="src/math/mat4.h" />
 		<Unit filename="src/math/vec3d.cpp" />
@@ -46,15 +56,13 @@
 		<Unit filename="src/math/vec4d.h" />
 		<Unit filename="src/model/triangle.cpp" />
 		<Unit filename="src/model/triangle.h" />
-		<Unit filename="src/render/3DRender.cpp" />
-		<Unit filename="src/render/3DRender.h" />
 		<Unit filename="src/render/camera.cpp" />
 		<Unit filename="src/render/camera.h" />
-		<Unit filename="src/render/display.cpp" />
-		<Unit filename="src/render/display.h" />
+		<Unit filename="src/render/light.cpp" />
+		<Unit filename="src/render/light.h" />
 		<Unit filename="src/render/projection.h" />
-		<Unit filename="src/render/text.cpp" />
-		<Unit filename="src/render/text.h" />
+		<Unit filename="src/render/renderer.cpp" />
+		<Unit filename="src/render/renderer.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
